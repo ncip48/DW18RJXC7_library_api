@@ -8,14 +8,13 @@ exports.getUser = async (req, res) => {
       },
     });
     res.send({
-      message: "Response success, user loaded",
+      message: "Response success, user loaded successfully",
       data: {
         users,
       },
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).send({
       error: {
         message: "Server ERROR",
@@ -40,7 +39,6 @@ exports.deleteUser = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-
     res.status(500).send({
       error: {
         message: "Server ERROR",
