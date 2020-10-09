@@ -1,8 +1,34 @@
-const { Category } = require("../../models");
+const { Category, Book, User } = require("../../models");
 
 exports.getCategory = async (req, res) => {
   try {
     const categories = await Category.findAll({
+      include: {
+        model: Book,
+        as: "books",
+        include: {
+          model: User,
+          as: "userId",
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+        attributes: {
+          exclude: [
+            "CategoryId",
+            "UserId",
+            "id_user",
+            "publication",
+            "id_category",
+            "pages",
+            "isbn",
+            "aboutBook",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      },
+      order: [["id", "ASC"]],
       attributes: {
         exclude: ["createdAt", "updatedAt"],
       },
@@ -27,6 +53,31 @@ exports.detailCategory = async (req, res) => {
   try {
     const { id } = req.params;
     const categories = await Category.findAll({
+      include: {
+        model: Book,
+        as: "books",
+        include: {
+          model: User,
+          as: "userId",
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+        attributes: {
+          exclude: [
+            "CategoryId",
+            "UserId",
+            "publication",
+            "id_category",
+            "id_user",
+            "pages",
+            "isbn",
+            "aboutBook",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      },
       where: {
         id,
       },

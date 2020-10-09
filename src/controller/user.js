@@ -1,8 +1,33 @@
-const { User } = require("../../models");
+const { User, Book, Category } = require("../../models");
 
 exports.getUser = async (req, res) => {
   try {
     const users = await User.findAll({
+      include: {
+        model: Book,
+        as: "books",
+        include: {
+          model: Category,
+          as: "category",
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+        attributes: {
+          exclude: [
+            "CategoryId",
+            "UserId",
+            "id_user",
+            "publication",
+            "id_category",
+            "pages",
+            "aboutBook",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      },
+      order: [["id", "ASC"]],
       attributes: {
         exclude: ["createdAt", "updatedAt"],
       },
