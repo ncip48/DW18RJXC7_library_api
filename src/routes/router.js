@@ -16,22 +16,23 @@ const {
   deleteBooks,
 } = require("../controller/book");
 const { register, login } = require("../controller/auth");
+const { authenticated } = require("../middleware/authentication");
 
 router.get("/users", getUser);
-router.delete("/user/:id", deleteUser);
+router.delete("/user/:id", authenticated, deleteUser);
 
 router.post("/register", register);
 router.post("/login", login);
 
 router.get("/category", getCategory);
 router.get("/category/:id", detailCategory);
-router.post("/category", addCategory);
-router.patch("/category/:id", updateCategory);
-router.delete("/category/:id", deleteCategory);
+router.post("/category", authenticated, addCategory);
+router.patch("/category/:id", authenticated, updateCategory);
+router.delete("/category/:id", authenticated, deleteCategory);
 
 router.get("/books", getBooks);
 router.get("/book/:id", detailBooks);
-router.post("/book", addBooks);
-router.delete("/book/:id", deleteBooks);
+router.post("/book", authenticated, addBooks);
+router.delete("/book/:id", authenticated, deleteBooks);
 
 module.exports = router;
