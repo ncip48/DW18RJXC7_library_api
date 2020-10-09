@@ -14,6 +14,7 @@ const {
   detailBooks,
   addBooks,
   deleteBooks,
+  updateBooks,
 } = require("../controller/book");
 const { register, login } = require("../controller/auth");
 const { authenticated } = require("../middleware/authentication");
@@ -34,5 +35,6 @@ router.get("/books", getBooks);
 router.get("/book/:id", detailBooks);
 router.post("/book", authenticated, addBooks);
 router.delete("/book/:id", authenticated, deleteBooks);
+router.patch("/book/:id", authenticated, updateBooks);
 
 module.exports = router;

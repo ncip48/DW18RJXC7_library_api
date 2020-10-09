@@ -96,23 +96,29 @@ exports.detailBooks = async (req, res) => {
 
 exports.addBooks = async (req, res) => {
   try {
-    const books = await Book.create(req.body, {
-      include: [
-        {
-          model: Category,
-          as: "category",
-          attributes: {
-            exclude: ["createdAt", "updatedAt"],
-          },
-        },
-        {
-          model: User,
-          as: "userId",
-          attributes: {
-            exclude: ["createdAt", "updatedAt"],
-          },
-        },
-      ],
+    const {
+      title,
+      publication,
+      pages,
+      ISBN,
+      aboutBook,
+      file,
+      thumbnail,
+      status,
+    } = req.body;
+    const id_category = req.body.category.id;
+    const id_user = req.body.userId.id;
+    const books = await Book.create({
+      title,
+      publication,
+      id_category,
+      id_user,
+      pages,
+      ISBN,
+      aboutBook,
+      file,
+      thumbnail,
+      status: status === null ? "Waiting" : status,
     });
     res.send({
       message: `Books successfully added`,
@@ -125,6 +131,58 @@ exports.addBooks = async (req, res) => {
     res.status(500).send({
       error: {
         message: "Server ERROR",
+        error: err.message,
+      },
+    });
+  }
+};
+
+exports.updateBooks = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      title,
+      publication,
+      pages,
+      ISBN,
+      aboutBook,
+      file,
+      thumbnail,
+      status,
+    } = req.body;
+    const id_category = req.body.category.id;
+    const id_user = req.body.userId.id;
+    const books = await Book.update(
+      {
+        title,
+        publication,
+        id_category,
+        id_user,
+        pages,
+        ISBN,
+        aboutBook,
+        file,
+        thumbnail,
+        status,
+      },
+      {
+        where: {
+          id,
+        },
+      }
+    );
+    res.send({
+      message: `Books with id ${id} has been successfully edited`,
+      data: {
+        books: req.body,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      error: {
+        message: "Server ERROR",
+        error: err.message,
       },
     });
   }
