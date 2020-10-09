@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 
 //import validator
 const joi = require("@hapi/joi");
+const { use } = require("../routes/router");
 
 //import jwt_key from .env
 const jwtKey = process.env.JWT_KEY;
@@ -100,6 +101,73 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
+    //get email and password from request body
+    const { email, password } = req.body;
+
+    //---------------Start Validation--------------//
+    const schema = joi.object({
+      email: joi.string().min(10).required(),
+      password: joi.string().min(8).required(),
+    });
+
+    //get error from joi validation
+    const { error } = schema.validate(req.body);
+
+    //if error from validation then show message error
+    if (error) {
+      return res.status(400).send({
+        error: {
+          message: error.details[0].message,
+        },
+      });
+    }
+
+    //---------------End Validation--------------//
+
+    //check user in database based on email inputed
+    const user = await User.findOne({
+      where: {
+        email,
+      },
+    });
+
+    //check if user existed with email inputed
+    if (!user) {
+      return res.status(400).send({
+        error: {
+          message: "Email or password invalid",
+        },
+      });
+    }
+
+    //if user existed, check are the password same with compare input with database
+    const validityPassword = await bcrypt.compare(password, user.password);
+
+    //if password not same when compared then
+    if (!validityPassword) {
+      return res.status(400).send({
+        error: {
+          message: "Email or password invalid",
+        },
+      });
+    }
+
+    //if email and password match or valid then create token
+    const token = jwt.sign(
+      {
+        id: user.id,
+      },
+      jwtKey
+    );
+
+    //send response from login system
+    res.send({
+      message: "You has been successfully loged in!",
+      data: {
+        email: user.email,
+        token,
+      },
+    });
   } catch (err) {
     console.log(err);
 
