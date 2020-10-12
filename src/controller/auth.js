@@ -8,10 +8,38 @@ const bcrypt = require("bcrypt");
 
 //import validator
 const joi = require("@hapi/joi");
-const { use } = require("../routes/router");
 
 //import jwt_key from .env
 const jwtKey = process.env.JWT_KEY;
+
+exports.checkAuth = async (req, res) => {
+  try {
+    const user = await User.findOne({
+      where: {
+        id: req.user.id,
+      },
+      attributes: {
+        exclude: ["createdAt", "updatedAt", "password"],
+      },
+    });
+
+    res.send({
+      message: "User Valid",
+      data: {
+        user,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+
+    res.status(500).send({
+      error: {
+        message: "Server ERROR",
+        error: err.message,
+      },
+    });
+  }
+};
 
 exports.register = async (req, res) => {
   try {
@@ -93,7 +121,7 @@ exports.register = async (req, res) => {
     res.status(500).send({
       error: {
         message: "Server ERROR",
-        display: err.message,
+        error: err.message,
       },
     });
   }
@@ -174,7 +202,7 @@ exports.login = async (req, res) => {
     res.status(500).send({
       error: {
         message: "Server ERROR",
-        display: err.message,
+        error: err.message,
       },
     });
   }

@@ -16,7 +16,7 @@ const {
   deleteBooks,
   updateBooks,
 } = require("../controller/book");
-const { register, login } = require("../controller/auth");
+const { register, login, checkAuth } = require("../controller/auth");
 const { authenticated } = require("../middleware/authentication");
 
 router.get("/users", getUser);
@@ -24,6 +24,7 @@ router.delete("/user/:id", authenticated, deleteUser);
 
 router.post("/register", register);
 router.post("/login", login);
+router.get("/auth", authenticated, checkAuth);
 
 router.get("/category", getCategory);
 router.get("/category/:id", detailCategory);
