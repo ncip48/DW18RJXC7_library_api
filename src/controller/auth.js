@@ -111,6 +111,7 @@ exports.register = async (req, res) => {
     res.send({
       message: "Congratulations, your account has been successfully created",
       data: {
+        role: user.role,
         email: user.email,
         token,
       },
@@ -192,6 +193,7 @@ exports.login = async (req, res) => {
     res.send({
       message: "You has been successfully loged in!",
       data: {
+        role: user.role,
         email: user.email,
         token,
       },
