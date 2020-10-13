@@ -20,6 +20,9 @@ module.exports = {
       gender: {
         type: Sequelize.STRING,
       },
+      photoProfile: {
+        type: Sequelize.STRING,
+      },
       phone: {
         type: Sequelize.STRING,
       },

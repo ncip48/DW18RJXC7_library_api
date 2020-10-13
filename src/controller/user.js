@@ -48,6 +48,58 @@ exports.getUser = async (req, res) => {
   }
 };
 
+exports.detailUser = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const users = await User.findAll({
+      include: {
+        model: Book,
+        as: "books",
+        include: {
+          model: Category,
+          as: "category",
+          attributes: {
+            exclude: ["createdAt", "updatedAt"],
+          },
+        },
+        attributes: {
+          exclude: [
+            "CategoryId",
+            "UserId",
+            "id_user",
+            "publication",
+            "id_category",
+            "pages",
+            "aboutBook",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+        where: {
+          id,
+        },
+      },
+      order: [["id", "ASC"]],
+      attributes: {
+        exclude: ["createdAt", "updatedAt"],
+      },
+    });
+    res.send({
+      message: "Response success, user loaded successfully",
+      data: {
+        users,
+      },
+    });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({
+      error: {
+        message: "Server ERROR",
+      },
+    });
+  }
+};
+
 exports.deleteUser = async (req, res) => {
   try {
     const { id } = req.params;

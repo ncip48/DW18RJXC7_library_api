@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { getUser, deleteUser } = require("../controller/user");
+const { getUser, detailUser, deleteUser } = require("../controller/user");
 const {
   getCategory,
   detailCategory,
@@ -20,6 +20,7 @@ const { register, login, checkAuth } = require("../controller/auth");
 const { authenticated } = require("../middleware/authentication");
 
 router.get("/users", getUser);
+router.get("/user/:id", detailUser);
 router.delete("/user/:id", authenticated, deleteUser);
 
 router.post("/register", register);
