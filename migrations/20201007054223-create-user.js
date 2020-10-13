@@ -8,6 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      role: {
+        type: Sequelize.INTEGER,
+      },
       fullName: {
         type: Sequelize.STRING,
       },
