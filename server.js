@@ -18,6 +18,8 @@ const port = process.env.PORT || 5000;
 app.use(express.json());
 //use cors
 app.use(cors());
+//use src/uploads/img as static
+app.use("/src/uploads/img", express.static("src/uploads/img"));
 
 //define router to /api/v1
 app.use("/api/v1/", router);

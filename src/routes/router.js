@@ -1,7 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
-const { getUser, detailUser, deleteUser } = require("../controller/user");
+const { uploadImage } = require("../middleware/upload");
+
+const {
+  getUser,
+  detailUser,
+  deleteUser,
+  updatePhotoProfile,
+  test_data,
+} = require("../controller/user");
 const {
   getCategory,
   detailCategory,
@@ -22,6 +30,12 @@ const { authenticated } = require("../middleware/authentication");
 router.get("/users", getUser);
 router.get("/user/:id", detailUser);
 router.delete("/user/:id", authenticated, deleteUser);
+router.patch(
+  "/edit_profile",
+  uploadImage("photoProfile"),
+  authenticated,
+  updatePhotoProfile
+);
 
 router.post("/register", register);
 router.post("/login", login);
@@ -38,5 +52,12 @@ router.get("/book/:id", detailBooks);
 router.post("/book", authenticated, addBooks);
 router.delete("/book/:id", authenticated, deleteBooks);
 router.patch("/book/:id", authenticated, updateBooks);
+
+router.patch(
+  "/test_data",
+  uploadImage("photoProfile"),
+  authenticated,
+  test_data
+);
 
 module.exports = router;
