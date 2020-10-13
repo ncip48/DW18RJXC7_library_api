@@ -75,9 +75,9 @@ exports.detailUser = async (req, res) => {
             "updatedAt",
           ],
         },
-        where: {
-          id,
-        },
+      },
+      where: {
+        id,
       },
       order: [["id", "ASC"]],
       attributes: {
