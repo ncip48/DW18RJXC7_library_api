@@ -22,6 +22,13 @@ module.exports = (sequelize, DataTypes) => {
           name: "id_category",
         },
       });
+      // Book.belongsToMany(models.User, {
+      //   as: "user",
+      //   through: {
+      //     model: "Library",
+      //     as: "info",
+      //   },
+      // });
     }
   }
   Book.init(

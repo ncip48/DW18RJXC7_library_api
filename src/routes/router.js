@@ -25,13 +25,14 @@ const {
   updateBooks,
 } = require("../controller/book");
 const { register, login, checkAuth } = require("../controller/auth");
+const { myLibrary } = require("../controller/library");
 const { authenticated } = require("../middleware/authentication");
 
 router.get("/users", getUser);
 router.get("/user/:id", detailUser);
 router.delete("/user/:id", authenticated, deleteUser);
 router.patch(
-  "/edit_profile",
+  "/edit_photo",
   uploadImage("photoProfile"),
   authenticated,
   updatePhotoProfile
@@ -59,5 +60,7 @@ router.patch(
   authenticated,
   test_data
 );
+
+router.get("/my-library", authenticated, myLibrary);
 
 module.exports = router;

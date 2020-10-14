@@ -140,31 +140,32 @@ exports.addBooks = async (req, res) => {
 exports.updateBooks = async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      title,
-      publication,
-      pages,
-      ISBN,
-      aboutBook,
-      file,
-      thumbnail,
-      status,
-    } = req.body;
-    const id_category = req.body.category.id;
-    const id_user = req.body.userId.id;
-    const books = await Book.update(
-      {
-        title,
-        publication,
-        id_category,
-        id_user,
-        pages,
-        ISBN,
-        aboutBook,
-        file,
-        thumbnail,
-        status,
-      },
+    // const {
+    //   title,
+    //   publication,
+    //   pages,
+    //   ISBN,
+    //   aboutBook,
+    //   file,
+    //   thumbnail,
+    //   status,
+    // } = req.body;
+    // const id_category = req.body.category.id;
+    // const id_user = req.body.userId.id;
+    await Book.update(
+      // {
+      //   title,
+      //   publication,
+      //   id_category,
+      //   id_user,
+      //   pages,
+      //   ISBN,
+      //   aboutBook,
+      //   file,
+      //   thumbnail,
+      //   status,
+      // },
+      req.body,
       {
         where: {
           id,

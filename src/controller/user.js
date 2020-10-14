@@ -145,7 +145,7 @@ exports.updatePhotoProfile = async (req, res) => {
       },
     });
     res.send({
-      message: `Photo picture with id ${id} has been successfully Modified`,
+      message: `Photo picture success updated`,
       data: {
         user,
       },
