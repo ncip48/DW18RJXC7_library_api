@@ -76,7 +76,9 @@ exports.detailBooks = async (req, res) => {
           "updatedAt",
         ],
       },
-      where: { id },
+      where: {
+        id,
+      },
     });
     res.send({
       message: `Books with id ${id} loaded successfully`,

@@ -25,7 +25,11 @@ const {
   updateBooks,
 } = require("../controller/book");
 const { register, login, checkAuth } = require("../controller/auth");
-const { myLibrary } = require("../controller/library");
+const {
+  myLibrary,
+  addLibrary,
+  deleteLibrary,
+} = require("../controller/library");
 const { authenticated } = require("../middleware/authentication");
 
 router.get("/users", getUser);
@@ -62,5 +66,7 @@ router.patch(
 );
 
 router.get("/my-library", authenticated, myLibrary);
+router.post("/my-library", authenticated, addLibrary);
+router.delete("/my-library/:id", authenticated, deleteLibrary);
 
 module.exports = router;
