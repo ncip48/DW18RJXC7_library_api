@@ -98,18 +98,21 @@ exports.detailBooks = async (req, res) => {
 
 exports.addBooks = async (req, res) => {
   try {
+    const { id } = req.user;
     const {
       title,
       publication,
       pages,
       ISBN,
+      id_category,
       aboutBook,
-      file,
-      thumbnail,
       status,
     } = req.body;
-    const id_category = req.body.category.id;
-    const id_user = req.body.userId.id;
+    //const id_category = req.body.category.id || req.body.id_category;
+    //const id_category = req.body.id_category;
+    const thumbnail = req.files["thumbnail"][0].filename;
+    const file = req.files["file"][0].filename;
+    const id_user = id;
     const books = await Book.create({
       title,
       publication,
@@ -120,7 +123,7 @@ exports.addBooks = async (req, res) => {
       aboutBook,
       file,
       thumbnail,
-      status: status === null ? "Waiting" : status,
+      status: status === null || status === "" ? "Waiting" : status,
     });
     res.send({
       message: `Books successfully added`,

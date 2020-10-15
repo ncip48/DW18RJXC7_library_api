@@ -189,7 +189,11 @@ exports.test_data = async (req, res) => {
   try {
     res.send({
       id,
-      request: req.file.filename,
+      request: {
+        thumbnail: req.files["thumbnail"][0].filename,
+        title: req.body,
+        file: req.files["file"][0].filename,
+      },
     });
   } catch (err) {
     res.send({

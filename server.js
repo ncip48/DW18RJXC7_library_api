@@ -20,6 +20,7 @@ app.use(express.json());
 app.use(cors());
 //use src/uploads/img as static
 app.use("/src/uploads/img", express.static("src/uploads/img"));
+app.use("/src/uploads/books", express.static("src/uploads/books"));
 
 //define router to /api/v1
 app.use("/api/v1/", router);
