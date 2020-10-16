@@ -29,6 +29,7 @@ exports.getBooks = async (req, res) => {
           "updatedAt",
         ],
       },
+      order: [["id", "DESC"]],
     });
     res.send({
       message: "Books loaded successfully",
@@ -179,44 +180,50 @@ exports.addBooks = async (req, res) => {
 exports.updateBooks = async (req, res) => {
   try {
     const { id } = req.params;
-    // const {
-    //   title,
-    //   publication,
-    //   pages,
-    //   ISBN,
-    //   aboutBook,
-    //   file,
-    //   thumbnail,
-    //   status,
-    // } = req.body;
-    // const id_category = req.body.category.id;
-    // const id_user = req.body.userId.id;
-    await Book.update(
-      // {
-      //   title,
-      //   publication,
-      //   id_category,
-      //   id_user,
-      //   pages,
-      //   ISBN,
-      //   aboutBook,
-      //   file,
-      //   thumbnail,
-      //   status,
-      // },
-      req.body,
-      {
+    const book = await Book.update(req.body, {
+      where: {
+        id,
+      },
+    });
+    if (book) {
+      const bookResult = await Book.findOne({
         where: {
           id,
         },
-      }
-    );
-    res.send({
-      message: `Books with id ${id} has been successfully edited`,
-      data: {
-        books: req.body,
-      },
-    });
+        include: [
+          {
+            model: Category,
+            as: "category",
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+          {
+            model: User,
+            as: "userId",
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+        ],
+        attributes: {
+          exclude: [
+            "CategoryId",
+            "UserId",
+            "id_user",
+            "id_category",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      });
+      res.send({
+        message: `Books with id ${id} has been successfully edited`,
+        data: {
+          books: bookResult,
+        },
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send({

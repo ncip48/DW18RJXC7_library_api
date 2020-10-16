@@ -52,7 +52,7 @@ router.post("/register", register);
 router.post("/login", login);
 router.get("/auth", authenticated, checkAuth);
 
-router.get("/category", getCategory);
+router.get("/categories", getCategory);
 router.get("/category/:id", detailCategory);
 router.post("/category", authenticated, addCategory);
 router.patch("/category/:id", authenticated, updateCategory);
