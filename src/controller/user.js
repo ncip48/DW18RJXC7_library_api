@@ -51,7 +51,7 @@ exports.getUser = async (req, res) => {
 exports.detailUser = async (req, res) => {
   const { id } = req.params;
   try {
-    const users = await User.findAll({
+    const user = await User.findOne({
       include: {
         model: Book,
         as: "books",
@@ -87,7 +87,7 @@ exports.detailUser = async (req, res) => {
     res.send({
       message: "Response success, user loaded successfully",
       data: {
-        users,
+        user,
       },
     });
   } catch (err) {
@@ -111,7 +111,7 @@ exports.updatePhotoProfile = async (req, res) => {
         },
       }
     );
-    const user = await User.findAll({
+    const user = await User.findOne({
       include: {
         model: Book,
         as: "books",

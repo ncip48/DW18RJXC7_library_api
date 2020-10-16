@@ -49,7 +49,7 @@ exports.getBooks = async (req, res) => {
 exports.detailBooks = async (req, res) => {
   try {
     const { id } = req.params;
-    const books = await Book.findAll({
+    const books = await Book.findOne({
       include: [
         {
           model: Category,
@@ -83,7 +83,7 @@ exports.detailBooks = async (req, res) => {
     res.send({
       message: `Books with id ${id} loaded successfully`,
       data: {
-        books: books,
+        book: books,
       },
     });
   } catch (err) {
@@ -125,12 +125,46 @@ exports.addBooks = async (req, res) => {
       thumbnail,
       status: status === null || status === "" ? "Waiting" : status,
     });
-    res.send({
-      message: `Books successfully added`,
-      data: {
-        books: books,
-      },
-    });
+
+    if (books) {
+      const bookResult = await Book.findOne({
+        where: {
+          id: books.id,
+        },
+        include: [
+          {
+            model: Category,
+            as: "category",
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+          {
+            model: User,
+            as: "userId",
+            attributes: {
+              exclude: ["createdAt", "updatedAt"],
+            },
+          },
+        ],
+        attributes: {
+          exclude: [
+            "CategoryId",
+            "UserId",
+            "id_user",
+            "id_category",
+            "createdAt",
+            "updatedAt",
+          ],
+        },
+      });
+      res.send({
+        message: `Books successfully added`,
+        data: {
+          book: bookResult,
+        },
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send({

@@ -52,7 +52,7 @@ exports.getCategory = async (req, res) => {
 exports.detailCategory = async (req, res) => {
   try {
     const { id } = req.params;
-    const categories = await Category.findAll({
+    const categories = await Category.findOne({
       include: {
         model: Book,
         as: "books",
@@ -88,7 +88,7 @@ exports.detailCategory = async (req, res) => {
     res.send({
       message: `Category with id ${id} loaded successfully`,
       data: {
-        categories: categories,
+        category: categories,
       },
     });
   } catch (err) {
@@ -116,7 +116,7 @@ exports.addCategory = async (req, res) => {
       res.send({
         message: `Category successfully created`,
         data: {
-          categories: categoryResult,
+          category: categoryResult,
         },
       });
     }
@@ -151,7 +151,7 @@ exports.updateCategory = async (req, res) => {
       res.send({
         message: `Category with id ${id} successfully edited`,
         data: {
-          categories: categoryResult,
+          category: categoryResult,
         },
       });
     }
