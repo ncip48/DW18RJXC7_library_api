@@ -223,6 +223,10 @@ exports.updateBooks = async (req, res) => {
           books: bookResult,
         },
       });
+    } else {
+      res.status(400).send({
+        message: "Error while updating books",
+      });
     }
   } catch (err) {
     console.log(err);
