@@ -204,6 +204,9 @@ exports.deleteBooks = async (req, res) => {
     });
     res.send({
       message: `Book with id ${id} has been removed successfully`,
+      data: {
+        id,
+      },
     });
   } catch (err) {
     console.log(err);

@@ -104,12 +104,22 @@ exports.detailCategory = async (req, res) => {
 exports.addCategory = async (req, res) => {
   try {
     const categories = await Category.create(req.body);
-    res.send({
-      message: `Category successfully created`,
-      data: {
-        categories: categories,
-      },
-    });
+    if (categories) {
+      const categoryResult = await Category.findOne({
+        where: {
+          id: categories.id,
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      });
+      res.send({
+        message: `Category successfully created`,
+        data: {
+          categories: categoryResult,
+        },
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send({
@@ -128,12 +138,23 @@ exports.updateCategory = async (req, res) => {
         id,
       },
     });
-    res.send({
-      message: `Category with id ${id} successfully edited`,
-      data: {
-        categories: req.body,
-      },
-    });
+
+    if (categories) {
+      const categoryResult = await Category.findOne({
+        where: {
+          id,
+        },
+        attributes: {
+          exclude: ["createdAt", "updatedAt"],
+        },
+      });
+      res.send({
+        message: `Category with id ${id} successfully edited`,
+        data: {
+          categories: categoryResult,
+        },
+      });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).send({
@@ -154,6 +175,9 @@ exports.deleteCategory = async (req, res) => {
     });
     res.send({
       message: `Category with id ${id} has been removed successfully`,
+      data: {
+        id,
+      },
     });
   } catch (err) {
     console.log(err);
