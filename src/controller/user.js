@@ -79,10 +79,10 @@ exports.detailUser = async (req, res) => {
       where: {
         id,
       },
-      order: [["id", "ASC"]],
       attributes: {
         exclude: ["createdAt", "updatedAt", "password"],
       },
+      order: [[{ model: Book, as: "books" }, "id", "DESC"]],
     });
     res.send({
       message: "Response success, user loaded successfully",
