@@ -98,8 +98,9 @@ exports.detailBooks = async (req, res) => {
 };
 
 exports.addBooks = async (req, res) => {
+  const { role } = req.user;
+  const { id } = req.user;
   try {
-    const { id } = req.user;
     const {
       title,
       publication,
@@ -109,22 +110,24 @@ exports.addBooks = async (req, res) => {
       aboutBook,
       status,
     } = req.body;
-    //const id_category = req.body.category.id || req.body.id_category;
-    //const id_category = req.body.id_category;
     const thumbnail = req.files["thumbnail"][0].filename;
     const file = req.files["file"][0].filename;
-    const id_user = id;
     const books = await Book.create({
       title,
       publication,
       id_category,
-      id_user,
+      id_user: id,
       pages,
       ISBN,
       aboutBook,
       file,
       thumbnail,
-      status: status === null || status === "" ? "Waiting" : status,
+      status:
+        status === null || status === ""
+          ? role === 1
+            ? "Approved"
+            : "Waiting"
+          : status,
     });
 
     if (books) {
