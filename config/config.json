@@ -1,9 +1,9 @@
 {
   "development": {
-    "username": "root",
-    "password": null,
-    "database": "library",
-    "host": "127.0.0.1",
+    "username": "db_library",
+    "password": "kocak123",
+    "database": "db_library",
+    "host": "103.121.122.247",
     "dialect": "mysql"
   },
   "test": {
@@ -14,8 +14,10 @@
     "dialect": "mysql"
   },
   "production": {
-    "use_env_variable" : "DATABASE_URL",
-    "dialect": "postgres",
-    "protocol": "postgres"
+    "username": "db_library",
+    "password": "kocak123",
+    "database": "db_library",
+    "host": "103.121.122.247",
+    "dialect": "mysql"
   }
 }
