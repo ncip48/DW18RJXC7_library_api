@@ -1,6 +1,10 @@
 //load express
 const express = require("express");
 const app = express();
+const http = require("http");
+const https = require("https");
+const fs = require("fs");
+const path = require("path");
 
 //load cors
 const cors = require("cors");
@@ -14,6 +18,23 @@ const router = require("./src/routes/router");
 //define port number
 const port = process.env.PORT || 5000;
 
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(
+  {
+    key: fs.readFileSync(path.join(__dirname, "cert", "key.pem")),
+    cert: fs.readFileSync(path.join(__dirname, "cert", "cert.pem")),
+  },
+  app
+);
+
+app.use((req, res, next) => {
+  if (req.protocol === "http") {
+    res.redirect(`https://${req.headers.host}${req.url}`);
+  } else {
+    next();
+  }
+});
+
 //use json format
 app.use(express.json());
 //use cors
@@ -26,4 +47,12 @@ app.use("/src/uploads/books", express.static("src/uploads/books"));
 app.use("/api/v1/", router);
 
 //listen the server
-app.listen(port, () => console.log(`Server running in port ${port}`));
+// app.listen(port, () => console.log(`Server running in port ${port}`));
+
+httpServer.listen(5000, () => {
+  console.log("HTTP Server running on port 5000");
+});
+
+httpsServer.listen(5001, () => {
+  console.log("HTTPS Server running on port 5001");
+});
