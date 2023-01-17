@@ -50,10 +50,10 @@ app.use("/api/v1/", router);
 //listen the server
 // app.listen(port, () => console.log(`Server running in port ${port}`));
 
-httpServer.listen(5001, () => {
+httpServer.listen(5000, () => {
   console.log("HTTP Server running on port 5000");
 });
 
-httpsServer.listen(5000, () => {
+httpsServer.listen(8070, () => {
   console.log("HTTPS Server running on port 5001");
 });
