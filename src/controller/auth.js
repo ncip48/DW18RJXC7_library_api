@@ -97,6 +97,7 @@ exports.register = async (req, res) => {
       gender,
       phone,
       address,
+      role: 0,
     });
 
     //if register success then make token from jwt

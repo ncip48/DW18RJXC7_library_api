@@ -10,6 +10,7 @@ module.exports = {
       },
       role: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       fullName: {
         type: Sequelize.STRING,
